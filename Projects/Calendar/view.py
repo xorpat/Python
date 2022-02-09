@@ -18,7 +18,7 @@ class Weekday(Enum):
 class MyApp(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
-        master.geometry("500x500")
+        master.geometry("1800x500")
         for i in range(3):  # Grid configuration
             master.rowconfigure(i)
         for k in range(4):
@@ -77,10 +77,16 @@ class MyApp(tk.Frame):
         for i in range(len(self.Month)): # 12 Month
             self.weekDayButtonList.append([])
             beginDay, endDay  = monthrange(datetime.datetime.now().year,i+1)
+            m_today, d_today = tuple(map(int,datetime.date.today().strftime('%m-%d').split('-')))
             dayctr = 1
             for j in range(5): # 5 rows
                 for k in range(len(Weekday)): # each day one Button
-                    self.weekDayButtonList[i].append(ttk.Button(self.frameDict[i], width=4, text="{var}".format(var=dayctr if dayctr >= beginDay and dayctr <= endDay else "")))
+                    self.weekDayButtonList[i].append(tk.Button(self.frameDict[i],
+                                                                width=4, 
+                                                                text="{var}".format(var=dayctr if dayctr >= beginDay and dayctr <= endDay else ""),
+                                                                bg="{bg_color}".format(bg_color="blue" if dayctr == d_today and i+1 == m_today else "#F0F0F0")
+                                                                ))
+                    
                     self.weekDayButtonList[i][-1].grid(row=3+j,column=k) # button positioning
                     dayctr += 1
         
@@ -107,10 +113,7 @@ class MyApp(tk.Frame):
         #self.a_button.grid(row=1, column=2, padx=10, pady=10)
         #self.createCalendarLabels()
         #self.createButtons(10)
-
-   
-        
-        
+                
 root = tk.Tk()
 app = MyApp(root)
 app.mainloop()
